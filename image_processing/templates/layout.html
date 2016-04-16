@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block layout %}
+    {% block header %}
+    {% endblock %}
+
+    {# Main content of page - other layout templates may override this block #}
+    {% block content %}
+    {% endblock %}
+
+{% endblock %}

@@ -1,0 +1,258 @@
+/*
+==================================================
+==================================================
+
+LIGHT SKIN
+
+==================================================
+==================================================
+*/
+
+
+/* global styles
+================================================== */
+body.light {
+background-color:#FFF;
+color:#777
+}
+
+.light hr {
+border-color:#E8E8E8
+}
+
+.light blockquote {
+background:#F7F7F7;
+border:1px solid #E8E8E8
+}
+
+.light h1,
+.light h2,
+.light h3,
+.light h4,
+.light h5,
+.light h6 {
+color:#555
+}
+
+/* buttons
+================================================== */
+.light .btn-default:hover {
+border:1px solid #333;
+color:#333
+}
+
+.light .btn-inverse {
+border:1px solid #333;
+color:#333 !important;
+}
+
+.light .btn-inverse:hover {
+color:#FFF!important
+}
+
+/* preloader
+================================================== */
+.light #preloader {
+background-color:#FFF
+}
+
+.light #spinner {
+background:url(../../images/preload.gif) no-repeat 0 0
+}
+
+/* general
+================================================== */
+.light .alternate-wrapper {
+background:#F7F7F7;
+border-top:1px solid #E8E8E8
+}
+
+/* fixed navbar
+================================================== */
+.light .scroll-navbar a.brand h1 { 
+background:url(../../images/website-logo/logo-light.png) 0 0 no-repeat
+}		
+
+.light .scroll-navbar {
+background:#FFF;
+border-bottom:1px solid #E8E8E8 !important
+}
+
+.light .scroll-navbar ul.nav li a,
+.light .scroll-navbar .brand h1 {
+color:#555
+}
+
+.light .scroll-navbar a.nav-signup:hover {
+border:1px solid #555 !important;
+color:#555 !important
+}
+
+.light .scroll-navbar .navbar-toggle {
+background-color:none;
+border:1px solid #555;
+color:#555
+}
+
+/*  icon boxes
+================================================== */
+.light .icon-box figure,
+.light .icon-round figure,
+.light .icon-square figure {
+background:#4D4D4D;
+color:#FFF
+}
+
+/*  Screenshots section
+================================================== */
+.light .screenshots-slider .carousel-indicators .active {
+background:#fff;
+border:1px solid #919191
+}
+
+.light .screenshots-slider .carousel-indicators li {
+background:#919191
+}
+
+.light .screenshot figure span.figure-mask {
+background-color:rgba(0, 0, 0, 0.7)
+}
+
+/* Blog
+================================================== */
+.light .news-list article {
+border-bottom:1px solid #E8E8E8
+}
+
+.light .blog-list article {
+border-bottom:1px solid #E8E8E8
+}
+
+.light .meta span {
+color:#4D4D4D;
+}
+
+.light .comment {
+border-bottom:1px solid #E8E8E8
+}
+
+.light .pagination li a:hover,
+.light .pagination li a:active {
+background:none !important;
+border:1px solid #333;
+color:#333 !important
+}
+
+/*  Pricing table
+================================================== */
+.light .price-plan {
+border:1px solid #DDD
+}
+
+.light .plan-title {
+background:#FFF
+}
+
+.light .plan-fee {
+background:#EDEDED;
+border-top:1px solid #DDD
+}
+
+.light .plan-fee p {
+color:#333
+}
+
+.light .plan-fee .fee-period {
+color:#555
+}
+
+.light .price-plan ul {
+background:#FFF
+}
+
+.light .price-plan ul li {
+border-top:1px solid #DDD
+}
+
+.light .price-plan ul li.plan-signup {
+background:#EDEDED
+}
+
+/* Form
+================================================== */
+.light fieldset input,
+.light fieldset textarea {
+border:1px solid #E8E8E8;
+color:#555;
+}
+
+.light fieldset i {
+color:#777;
+}
+
+.light .alternate-wrapper fieldset input,
+.light .alternate-wrapper fieldset textarea {
+border:1px solid #D9D9D9
+}
+
+/* Footer
+================================================== */
+.light footer {
+background:#383838
+}
+
+.light footer p {
+color:#999
+}
+
+.light ul.footer-social a {
+color:#999
+}
+
+/*  modal panel - login and signup
+================================================== */
+.light .access-panel {
+background:#FFF;
+border:1px solid #E8E8E8
+}
+
+.light .modal-backdrop {
+background:#FFF
+}
+
+.light .modal-header {
+background: url(../../images/website-logo/logo-light.png) 50% 0 no-repeat;
+border-bottom:1px solid #E8E8E8
+}
+
+.light .modal-footer {
+background:#F7F7F7
+}
+
+.light .modal-divider {
+background:#E8E8E8
+}
+
+.light .modal-divider p {
+background:#FFF;
+color:#777
+}
+
+.light input[type=checkbox] + label:before {
+border:1px solid #E8E8E8;
+color:#777
+}
+
+/*  retina logo features
+================================================== */
+@media 
+(-webkit-min-device-pixel-ratio: 2), 
+(min-resolution: 192dpi) { 
+
+		.light .scroll-navbar a.brand h1,
+		.light .modal-header { 
+		background-image:url(../../images/retina/logo-light-2x.png);
+		background-size:30px 30px
+		}		
+
+}

@@ -1,0 +1,103 @@
+{% extends "layout.html" %}
+{% load staticfiles %}
+
+{% block ng_app %}ng-app="frontend"{% endblock %}
+
+{% block content %}
+<span id="task_id" style="display: none">{{ task_id }}</span>
+<section id="features" class="wrapper"  ng-controller="DetectionStatus">
+    <div class="container">
+        <div class="row">
+            <!-- heading text -->
+            <div class="heading col-md-6 col-sm-6 col-md-offset-3 col-sm-offset-3">
+                <h2>
+                    DETECTION STATUS
+                    <span class="line"></span>
+                </h2>
+            </div> <!-- end heading text -->
+        </div> <!-- end row -->
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1" id="analyze_wizard">
+                <div class="col-md-12" ng-if="loading">
+                    <h3 class="text-center"> LOADING ... </h3>
+                    <p class="text-center">
+                        <i class="fa fa-spinner fa-pulse"></i>
+                    </p>
+                </div>
+                <div class="col-md-12" ng-show="detection.status == 'in_progress'">
+                    <h3 class="text-center"> IN PROGRESS </h3>
+                    <p class="text-center">
+                        <i class="fa fa-circle-o-notch fa-spin fa-5x"></i>
+                    </p>
+                    <p class="text-center mt-20">
+                        <span><b> completed {% verbatim %} {{ detection.progress }} {% endverbatim %} </b></span>
+                    </p>
+                </div>
+                <div class="col-md-12" ng-show="detection.status == 'completed'">
+                    <h3 class="text-center"> COMPLETED </h3>
+                    <p class="text-center">
+                        <i class="fa fa-check fa-5x"></i>
+                    </p>
+                    {% comment %}
+                    <p class="text-center mt-20">
+                        <span><b> You can download your results files</b></span>
+                    </p>
+                    <p class="text-center mt-20">
+                        <a href="" class="download-btn btn btn-primary btn-large" style="color: #fff; text-decoration: none"><span >DOWNLOAD</span> </a>
+                    </p>
+                    {% endcomment %}
+                </div>
+                <div class="col-md-12 mt-20" ng-show="!loading">
+                    <h3> Results list </h3>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th> Image </th>
+                                <th> Algorithm </th>
+                                <th> Processing status </th>
+                                <th> Forgery status </th>
+                                <th> Result document </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% verbatim %}
+                            <tr ng-repeat="line in detection.lines | orderBy: 'status' ">
+                                <td>
+                                    {{ line.document }}
+                                </td>
+                                <td>
+                                    {{ line.algorithm }}
+                                </td>
+                                <td>
+                                    <span style="text-transform: capitalize">{{ line.result.task_status }}</span>
+                                </td>
+                                <td>
+                                    <span style="text-transform: capitalize" ng-show="line.result.result_status">{{ line.result.result_status }}</span>
+                                    <span style="text-transform: capitalize" ng-show="!line.result.result_status"> - </span>
+                                </td>
+                                <td>
+                                    <a download href="/api/detection-request/{{ detection.id }}/get_doc/?h={{ detection.uid }}&line={{ line.id }}" ng-if="line.result.document"> Download </a>
+                                    <span ng-if="!line.result.document"> - </span>
+                                </td>
+                            </tr>
+                            {% endverbatim %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extrascripts %}
+    {{ block.super }}
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular-sanitize.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular-cookies.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular-route.js"></script>
+    <script src="{% static 'js/angular-django-rest-resource.js' %}"></script>
+    <script src="{% static 'js/ng-flow-standalone.js' %}"></script>
+    <script src="{% static 'js/app.js' %}"></script>
+    <script src="{% static 'js/controllers.js' %}"></script>
+{% endblock %}

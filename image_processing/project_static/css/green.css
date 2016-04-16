@@ -1,0 +1,108 @@
+/*
+==================================================
+==================================================
+
+GREEN SKIN
+
+==================================================
+==================================================
+*/
+
+.green a,
+.green a:hover,
+.green a:focus,
+.green a:active {
+color:#BEDB39
+}
+
+.green em {
+color:#BEDB39
+}
+
+.green li i {
+color:#BEDB39
+}
+
+.green blockquote figure {
+background:#BEDB39;
+color:#FFF
+}
+
+.green .btn-default {
+background:#BEDB39;
+border-color:#BEDB39;
+color:#555 !important
+}
+
+.green .btn-inverse:hover {
+background:#BEDB39 !important;
+border:1px solid #BEDB39;
+}
+
+.green .heading span.line {
+background:#BEDB39
+}
+
+.green ul.nav li a:hover,
+.green ul.nav li a:focus {
+color:#BEDB39
+}
+
+.green .scroll-navbar li a:hover {
+color:#BEDB39!important
+}
+
+.green .overview-box figure {
+color:#BEDB39
+}
+
+.green .screenshot figure span.figure-mask a span {
+background:#BEDB39;
+color:#FFF
+}
+
+.green .news-list figure {
+background:#BEDB39
+}
+
+.green .pagination li a {
+background:#BEDB39!important;
+border:1px solid #BEDB39;
+color:#FFF!important;
+}
+
+.green .counter figure {
+color:#BEDB39
+}
+
+.green .featured-plan .plan-fee {
+background:#BEDB39
+}
+
+.green fieldset span.error {
+color:#BEDB39
+}
+
+.green fieldset #response-box {
+color:#BEDB39!important
+}
+
+.green fieldset #response-box p {
+color:#BEDB39
+}
+
+.green ul.social-list a {
+background:#BEDB39;
+border:1px solid #BEDB39;
+color:#FFF
+}
+
+.green ul.social-list a:hover {
+background:none;
+border:1px solid #BEDB39;
+color:#BEDB39
+}
+
+.green ul.footer-social a:hover {
+color:#BEDB39
+}

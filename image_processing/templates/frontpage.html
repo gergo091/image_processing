@@ -1,0 +1,213 @@
+{% extends "layout.html" %}
+{% load staticfiles %}
+
+{% block ng_app %}ng-app="frontend" flow-prevent-drop{% endblock %}
+
+{% block header %}
+  <!-- header - homepage -->
+      <header id="homepage">
+          <!-- background overlay -->
+          <span class="mask-overlay"></span>
+          <!-- scroll down navigation bar -->
+          {% comment %}
+          <nav class="navbar" role="navigation">
+              <div class="container">
+                  <div class="row">
+                      <div class="navbar-header col-md-5 col-sm-5">
+                          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+                              <span class="sr-only">Toggle navigation</span>
+                              <span class="fa fa-bars"></span>
+                          </button>
+                          <!-- website brand -->
+                          <a class="brand" href="index.html">
+                              <h1>Image forgery detection</h1>
+                          </a> <!-- end website brand -->
+                      </div>
+                      <!-- navigation links -->
+                      <div class="collapse navbar-collapse" id="main-navbar">
+      
+                          <ul class="nav navbar-nav navbar-right">
+                              <li><a href="#homepage">Home</a></li>
+                              <li><a href="#news">About</a></li>
+                              <li><a href="#contact">Contact</a></li>
+                          </ul>
+                      </div> <!-- end navigation links -->
+                  </div> <!-- end row -->
+              </div> <!-- end container -->
+          </nav> <!-- end scroll down navigation bar -->
+          {% endcomment %}
+          <div class="container">
+              <div class="row">
+                  <!-- homepage slogan -->
+                  <section class="slogan col-md-8 col-sm-8 col-md-offset-2 col-sm-offset-2" >
+                          <!-- homepage slogan - write a cool slogan -->
+                          <h1>Photos don't lie ... or do they ?</h1>
+                          <p>Copy- Move Attack Forgery Detection by Using SIFT</p>
+                          <!-- download button -->
+                          <button class="btn btn-default start" style="margin-top: 100px; width: 350px;"> START DETECTION</button>
+                  </section> <!-- end homepage slogan -->
+              </div> <!-- end row -->
+          </div> <!-- end container -->
+      </header> <!-- end header - homepage -->
+{% endblock %}
+
+{% block content %}
+    <section id="features" class="wrapper" ng-controller="NewAnalyze">
+        <div class="container">
+            <div class="row">
+                <!-- heading text -->
+                <div class="heading col-md-6 col-sm-6 col-md-offset-3 col-sm-offset-3">
+                    <h2>
+                        IMAGE FORGERY DETECTION
+                        <span class="line"></span>
+                    </h2>
+                </div> <!-- end heading text -->
+            </div> <!-- end row -->
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1" id="analyze_wizard"
+                    flow-init flow-files-submitted="$flow.upload()"
+                    flow-name="file_uploader.flow"
+                    flow-file-added="!!{png:1,gif:1,jpg:1,jpeg:1}[$file.getExtension()]"
+                    flow-file-success="flowFileSuccess($file, $message)">
+                    <div class="col-md-12">
+                        <p>
+                            <h3>1. Upload images for analyze</h3>
+                        </p>
+                        <div class="col-md-10 col-md-offset-1">
+                            <div
+                                flow-drop flow-drag-enter="style={border:'2px dashed #18ba60'}"
+                                flow-drag-leave="style={border:'2px dashed #dde1e1'}"
+                                style="height: 300px; margin-bottom: 20px; padding-top: 65px; border: 2px dashed #ddd">
+                                <h4 style="font-size: 20px; color: #7e7e7e; text-align: center">
+                                    <button class="btn btn-default" flow-btn>Upload File</button>
+                                    <button class="btn btn-default" flow-btn flow-directory>Upload Folder</button>
+                                    <p style="font-size: 20px; margin-top: 40px;">
+                                        <span style="text-transform: none;">or</span> Drag And Drop your images here
+                                    </p>
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                <div class="col-md-12 mt-20"  ng-show="file_uploader.flow.files.length">
+                    {% verbatim %}
+                    <table class="table mt-20">
+                        <thead>
+                            <tr>
+                                <th style="width: 130px;"> Image </th>
+                                <th> Name </th>
+                                <th> Status </th>
+                                <th> Delete </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="file in file_uploader.flow.files" style="height: 50px;">
+                                <td>
+                                    <div style="width: 50px; height: 50px; overflow: hidden;">
+                                    <img flow-img="file" style="width: 50px; margin-bottom: 0px;"/>
+                                    </div>
+                                </td>
+                                <td>
+                                    {{ file.name }}
+                                </td>
+                                <td>
+                                    <span ng-show="file.isUploading()"> Uplading ... <i class="fa fa-spinner fa-pulse"></i></span>
+                                    <span ng-show="!file.isUploading()"> Uploaded </span>
+                                    <!--
+                                    <div class="progress" style="height: 20px; border-radius: 0px;">
+                                        <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" ng-style="{width: (file.progress() * 100) + '%'}">
+                                            <b>{{file.progress() * 100 }} %</b>
+                                        </div>
+                                    </div>
+                                    -->
+                                </td>
+                                <td>
+                                    <a class="with-pointer" ng-click="file.cancel(); document_cancel(file.uniqueIdentifier)"> Delete </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    {% endverbatim %}
+                </div>
+                <div class="col-md-12 mt-20">
+                    <p>
+                       <h3>2. Select detection method(s)</h3>
+                    </p>
+                    <div class="checkbox mt-20" ng-repeat="d in detection_methods" style="padding-left: 20px;">
+                        <input type="checkbox" name="email" checked ng-model="selected_methods[d.id]">
+                        <label> {% verbatim %} {{ d.description }} {% endverbatim %}</label>
+                    </div>
+                </div>
+                <div class="col-md-12 text-center mt-20">
+                    <button class="btn btn-primary btn-lg" ng-click="start_detection()" style="width: 500px;"> START DETECTION </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="sift" class="wrapper">
+        <div class="container">
+            <div class="row">
+                <!-- heading text -->
+                <div class="heading col-md-10 col-md-offset-1">
+                    <h2>
+                        SIFT - Scale Invariant Features Transform
+                        <span class="line"></span>
+                    </h2>
+                </div> <!-- end heading text -->
+            </div> <!-- end row -->
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1">
+                    <div class="col-md-6">
+                    <h3>
+                        Overview
+                    </h3>
+                    <p>
+                        Scale-invariant feature transform (or SIFT) is an algorithm in computer vision to detect and describe local features in images. <br>
+                        The algorithm was published by David Lowe in 1999.
+                    </p>
+                    <h3 class="mt-20">
+                        Applications
+                    </h3>
+                    <p>
+                        Applications include object recognition, robotic mapping and navigation, image stitching, 3D modeling, gesture recognition, video tracking, individual identification of wildlife and match moving.
+                    </p>
+                    </div>
+                    <div class="col-md-5 col-md-offset-1 mt-20">
+                        <img src="https://ryanlei.files.wordpress.com/2011/03/sift_descriptor2.jpg" class="img-responsive mt-20">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block extrascripts %}
+    {{ block.super }}
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular-sanitize.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular-cookies.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular-route.js"></script>
+    <script src="{% static 'js/angular-django-rest-resource.js' %}"></script>
+    <script src="{% static 'js/ng-flow-standalone.js' %}"></script>
+    <script src="{% static 'js/app.js' %}"></script>
+    <script src="{% static 'js/controllers.js' %}"></script>
+
+    <script>
+        $(function() {
+            var scroll_to = function(id) {
+                if (id.indexOf("#?") == 0) {
+                    return;
+                }
+                var search_id = "#" + id;
+                $('html, body').animate({
+                    scrollTop: parseInt($(search_id).offset().top)
+                }, 500);
+            }
+
+            $(".start").click(function() {
+                scroll_to("features");
+            });
+        });
+    </script>
+{% endblock %}

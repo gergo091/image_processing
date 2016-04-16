@@ -34,7 +34,7 @@ class Document(models.Model):
         return self.name
 
 
-class DetectionMethod(models.Model):
+class TaskMethod(models.Model):
     name = models.CharField(max_length=255)
     code = models.CharField(max_length=255)
     description = models.TextField(
@@ -46,7 +46,7 @@ class DetectionMethod(models.Model):
         return self.name
 
 
-class DetectionRequest(models.Model):
+class TaskRequest(models.Model):
     uid = models.TextField()
     task_id = models.TextField(
         blank=True,
@@ -92,16 +92,16 @@ class DetectionRequest(models.Model):
         pass
 
 
-class DetectionRequestLine(models.Model):
-    detection_request = models.ForeignKey(
-        DetectionRequest,
+class TaskRequestLine(models.Model):
+    task_request = models.ForeignKey(
+        TaskRequest,
         related_name="lines"
     )
     task_id = models.TextField(
         blank=True,
         null=True
     )
-    detection_method = models.ForeignKey(DetectionMethod)
+    task_method = models.ForeignKey(TaskMethod)
     document = models.ForeignKey(
         Document,
         null=True,
@@ -140,7 +140,7 @@ class DetectionRequestLine(models.Model):
         if task is None:
             task = self._get_task()
 
-        result = DetectionResult.objects.create(
+        result = TaskResult.objects.create(
             line=self,
             task_status=task.status
         )
@@ -162,10 +162,10 @@ class DetectionRequestLine(models.Model):
         return result
 
 
-class DetectionResult(models.Model):
+class TaskResult(models.Model):
     UPLOAD_TO = u"results/%Y/%m/%d/"
 
-    line = models.ForeignKey(DetectionRequestLine)
+    line = models.ForeignKey(TaskRequestLine)
     document = models.FileField(
         upload_to=UPLOAD_TO,
         null=True,

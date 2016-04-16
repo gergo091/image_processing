@@ -12,7 +12,6 @@ import importlib
 
 BUILTIN_DETECTION_METHODS = {
     "sift": "apps.detection_methods.sift" ,  
-	"another": "apps.detection_methods.another"     
 }
 
 _analyzators = {}

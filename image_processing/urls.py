@@ -2,15 +2,15 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.conf import settings
 
-from apps.frontend.views import HomeView, DetectionStatusView
+from apps.frontend.views import HomeView, TaskStatusView
 
 urlpatterns = [
     # Examples:
     # url(r'^blog/', include('blog.urls')),
     url(r'^$', HomeView.as_view(), name='home'),
     url(
-        r'^detection-status/(?P<task_id>[\-\w]+)$',
-        DetectionStatusView.as_view(),
+        r'^task-status/(?P<task_id>[\-\w]+)$',
+        TaskStatusView.as_view(),
         name='status'
     ),
     url(r'^api/', include('apps.api_urls')),

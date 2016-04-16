@@ -7,11 +7,11 @@ class HomeView(TemplateView):
     template_name = "frontpage.html"
 
 
-class DetectionStatusView(TemplateView):
+class TaskStatusView(TemplateView):
     template_name = "status.html"
 
     def get_context_data(self, *args, **kwargs):
-        ret = super(DetectionStatusView, self).get_context_data(*args, **kwargs)
+        ret = super(TaskStatusView, self).get_context_data(*args, **kwargs)
         return ret
 
 

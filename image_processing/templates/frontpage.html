@@ -112,13 +112,6 @@
                                 <td>
                                     <span ng-show="file.isUploading()"> Uplading ... <i class="fa fa-spinner fa-pulse"></i></span>
                                     <span ng-show="!file.isUploading()"> Uploaded </span>
-                                    <!--
-                                    <div class="progress" style="height: 20px; border-radius: 0px;">
-                                        <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" ng-style="{width: (file.progress() * 100) + '%'}">
-                                            <b>{{file.progress() * 100 }} %</b>
-                                        </div>
-                                    </div>
-                                    -->
                                 </td>
                                 <td>
                                     <a class="with-pointer" ng-click="file.cancel(); document_cancel(file.uniqueIdentifier)"> Delete </a>
@@ -130,15 +123,16 @@
                 </div>
                 <div class="col-md-12 mt-20">
                     <p>
-                       <h3>2. Select detection method(s)</h3>
+                       <h3>2. Select task</h3>
                     </p>
-                    <div class="checkbox mt-20" ng-repeat="d in detection_methods" style="padding-left: 20px;">
-                        <input type="checkbox" name="email" checked ng-model="selected_methods[d.id]">
-                        <label> {% verbatim %} {{ d.description }} {% endverbatim %}</label>
+                    <div class="checkbox mt-20" style="padding-left: 20px;">
+			<label ng-repeat="d in task_methods">
+                        	<input type="radio" name="selected_method" ng-model="selected_method" value="d.id"/>{{d.description}}
+			</label>
                     </div>
                 </div>
                 <div class="col-md-12 text-center mt-20">
-                    <button class="btn btn-primary btn-lg" ng-click="start_detection()" style="width: 500px;"> START DETECTION </button>
+                    <button class="btn btn-primary btn-lg" ng-click="start_task()" style="width: 500px;"> START DETECTION </button>
                 </div>
             </div>
         </div>

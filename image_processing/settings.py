@@ -79,8 +79,7 @@ WSGI_APPLICATION = 'image_processing.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        'NAME': 'imgforgery',
+        'NAME': 'imgprocessing',
         'USER': 'imgforgery',
         'PASSWORD': 'imgforgery',
         'HOST': '',

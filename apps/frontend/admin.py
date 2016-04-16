@@ -9,7 +9,7 @@ from . import models
 
 admin.site.register(models.Document)
 admin.site.register(models.ChunkyUpload)
-admin.site.register(models.DetectionMethod)
-admin.site.register(models.DetectionRequest)
-admin.site.register(models.DetectionRequestLine)
-admin.site.register(models.DetectionResult)
+admin.site.register(models.TaskMethod)
+admin.site.register(models.TaskRequest)
+admin.site.register(models.TaskRequestLine)
+admin.site.register(models.TaskResult)

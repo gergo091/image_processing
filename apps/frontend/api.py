@@ -19,10 +19,10 @@ from drf_compound_fields.fields import ListField
 from . models import (
     Document,
     ChunkyUpload,
-    DetectionRequest,
-    DetectionResult,
-    DetectionMethod,
-    DetectionRequestLine,
+    TaskRequest,
+    TaskResult,
+    TaskMethod,
+    TaskRequestLine,
     ChunkUploadForm,
 )
 from .. tasks import process_line_task, celery_app
@@ -49,29 +49,23 @@ class ChunkyUploadSaver(object):
             self.content_file.write(content)
 
 
-class DetectionRequestSerializer(serializers.ModelSerializer):
-    document_ids = ListField(
-        serializers.IntegerField(),
-        write_only=True,
-    )
-    algorithm_ids = ListField(
-        serializers.IntegerField(),
-        write_only=True,
-    )
+class TaskRequestSerializer(serializers.ModelSerializer):
+    document_id = serializers.IntegerField(max_value=None, min_value=None)
+    algorithm_id = serializers.IntegerField(max_value=None, min_value=None)
     status = serializers.CharField(read_only=True)
     uid = serializers.CharField(read_only=True, required=False)
 
 
     class Meta:
-        model = DetectionRequest
+        model = TaskRequest
 
 
-class DetectionMethodSerializer(serializers.ModelSerializer):
+class TaskMethodSerializer(serializers.ModelSerializer):
     class Meta:
-        model = DetectionMethod
+        model = TaskMethod
 
 
-class DetectionResultSerializer(serializers.ModelSerializer):
+class TaskResultSerializer(serializers.ModelSerializer):
     document = serializers.SerializerMethodField('get_document_data')
     result_status = serializers.SerializerMethodField("get_status")
 
@@ -85,22 +79,26 @@ class DetectionResultSerializer(serializers.ModelSerializer):
 
 
     class Meta:
-        model = DetectionResult
+        model = TaskResult
 
 
-class DetectionMethodViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = DetectionMethod.objects.all()
-    serializer_class = DetectionMethodSerializer
+class TaskMethodViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = TaskMethod.objects.all()
+    serializer_class = TaskMethodSerializer
 
 
-class DetectionRequestViewSet(viewsets.ModelViewSet):
+class TaskRequestViewSet(viewsets.ModelViewSet):
 
-    queryset = DetectionRequest.objects.all()
-    serializer_class = DetectionRequestSerializer
+    queryset = TaskRequest.objects.all()
+    serializer_class = TaskRequestSerializer
     permission_classes = [AllowAny]
 
     def put(self, request):
         pass
+
+    def create(self, request):
+	print request.DATA
+        return super(TaskRequestViewSet, self).create(request)
 
     def pre_save(self, obj):
         obj.uid = str(uuid.uuid4())
@@ -116,24 +114,24 @@ class DetectionRequestViewSet(viewsets.ModelViewSet):
             id__in=[v for v in data['document_ids']]
         )
         # create lines for each document
-        algs = DetectionMethod.objects.filter(
+        algs = TaskMethod.objects.filter(
             id__in=[v for v in data['algorithm_ids']]
         )
 
         for doc in docs:
             for alg in algs:
-                DetectionRequestLine.objects.create(
-                    detection_request=obj,
-                    detection_method=alg,
+                TaskRequestLine.objects.create(
+                    task_request=obj,
+                    task_method=alg,
                     document=doc
                 )
 
         #start tasks
         res = group(
             (process_line_task.s(
-                method=line.detection_method.code,
+                method=line.task_method.code,
                 filepath=line.document.image.file.name,
-                upload_to=DetectionResult.upload_to()
+                upload_to=TaskResult.upload_to()
             ) for line in obj.lines.all())
         )()
 
@@ -149,7 +147,7 @@ class DetectionRequestViewSet(viewsets.ModelViewSet):
 
 
     def get_queryset(self, qs=None):
-        qs = super(DetectionRequestViewSet, self).get_queryset()
+        qs = super(TaskRequestViewSet, self).get_queryset()
         if "h" in self.request.GET:
             return qs.filter(uid=self.request.GET.get("h"))
         else:
@@ -160,7 +158,7 @@ class DetectionRequestViewSet(viewsets.ModelViewSet):
         obj = self.get_object()
         data = request.GET
         line = obj.lines.get(id=data.get("line"))
-        results = line.detectionresult_set.all()
+        results = line.taskresult_set.all()
         if not results.count():
             return Response(
                 {"error": "No results for line."},
@@ -188,15 +186,15 @@ class DetectionRequestViewSet(viewsets.ModelViewSet):
             result = None
 
             if line.is_completed():
-                result = DetectionResultSerializer(
-                    line.detectionresult_set.all()[0]
+                result = TaskResultSerializer(
+                    line.taskresult_set.all()[0]
                 ).data
 
             else:
                 task = celery_app.AsyncResult(line.task_id)
                 if task.ready():
                     # The task has been executed
-                    result = DetectionResultSerializer(line.complete(task)).data
+                    result = TaskResultSerializer(line.complete(task)).data
                 else:
                     result = {
                         "task_status": task.status        
@@ -205,7 +203,7 @@ class DetectionRequestViewSet(viewsets.ModelViewSet):
             lines.append({
                 "id": line.id,
                 "document": line.document.name,
-                "algorithm": line.detection_method.name,
+                "algorithm": line.task_method.name,
                 "result": result
             })
 
@@ -322,11 +320,11 @@ router.register(
 )
 
 router.register(
-    r'detection-request',
-    DetectionRequestViewSet,
+    r'task-request',
+    TaskRequestViewSet,
 )
 
 router.register(
-    r'detection-method',
-    DetectionMethodViewSet,
+    r'task-method',
+    TaskMethodViewSet,
 )

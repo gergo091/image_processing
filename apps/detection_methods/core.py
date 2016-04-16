@@ -1,7 +1,6 @@
 import os
 
 class BaseDetectionMethod(object):
-    # used for detection method mapping
     code = None
 
     def __init__(self, filepath, upload_to):
@@ -20,7 +19,4 @@ class BaseDetectionMethod(object):
             self.upload_to,
             self.filepath.split("/")[-1:][0]
         )
-
-
-
 
